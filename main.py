@@ -1,9 +1,10 @@
-from bfs import bfs
+from idfs import idfs
 from ass import ass
+from board import Board
 
 algorithms = {
-    '': ('bfs and A*', [bfs, ass]),
-    'bfs': ('only bfs', [bfs]),
+    '': ('idfs and A*', [idfs, ass]),
+    'idfs': ('only bfs', [idfs]),
     'a': ('only a*', [ass])
 }
 
@@ -38,12 +39,24 @@ def promptLoggingLevel():
     return prompt(loggingLevels, 'Select logging level', 'silent')
 
 
+def useCustomBoard():
+    ''' prompts the user if they want provide a custom board to solve or not'''
+    return '' != prompt({'yes': 'y', '': 'no'}, f'Solve custom board\n(main algorithm analytics are not run on custom boards)', 'no')
+
+
 if __name__ == '__main__':
     alg = promptAlgorithm()
     loggingLevel = promptLoggingLevel()
-    # prompt user to select whether a collection of prechosen boards will be used to test the algorithm on, or if they would like to construct their own custom board. it's possible that not invalid board configurations exist
+    customBoard = useCustomBoard()
+    board = None
+    if customBoard:
+        print('todo: prompt user through creating custom board')
     print(
         f'\nRunning {algorithms[alg][0]} at {loggingLevels[loggingLevel]} logging')
     for algorithm in algorithms[alg][1]:
-        solver = algorithm(loggingLevel)
+        solver = algorithm(loggingLevel, board)
         solver.run()
+
+    test = Board(16)
+    test[8] = 400
+    print(test)
