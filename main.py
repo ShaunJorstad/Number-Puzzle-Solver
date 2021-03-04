@@ -41,6 +41,7 @@ def promptLoggingLevel():
 if __name__ == '__main__':
     alg = promptAlgorithm()
     loggingLevel = promptLoggingLevel()
+    # prompt user to select whether a collection of prechosen boards will be used to test the algorithm on, or if they would like to construct their own custom board. it's possible that not invalid board configurations exist
     print(
         f'\nRunning {algorithms[alg][0]} at {loggingLevels[loggingLevel]} logging')
     for algorithm in algorithms[alg][1]:
