@@ -4,7 +4,7 @@
 
 Leverages ai search practices to solve an 8 number puzzle as shown below with various algorithms & heuristics, and analyzes the results.
 
-![image of 8 puzzle](https://www.google.com/url?sa=i&url=http%3A%2F%2Fwww.aiai.ed.ac.uk%2F~gwickler%2Feightpuzzle-uninf.html&psig=AOvVaw1l6uzxNyG9wh5yav4GQGuk&ust=1614971148526000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCPiN7b-ql-8CFQAAAAAdAAAAABAD)
+![image of 8 puzzle](https://lh3.googleusercontent.com/proxy/d1o2xjQv_59eKJ2SxYTPtlE_22_SUVB3opvy4niRVH2xwswi181tmKyMw4EugGtSIwdEHFadgD0YnCb0Pp1SVqQRl4Mgw5XvDmgt_UBZ35k1SyUJUw)
 
 ## Algorithms
 
