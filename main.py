@@ -57,6 +57,7 @@ if __name__ == '__main__':
         solver = algorithm(loggingLevel, board)
         solver.run()
 
-    test = Board(16)
+    test = Board(9)
     test[8] = 400
+    test.swap(3, 4)
     print(test)

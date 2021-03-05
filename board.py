@@ -29,6 +29,12 @@ class Board(collections.MutableSequence):
     def append(self, value):
         self.insert(len(self) + 1, value)
 
+    def swap(self, i, j):
+        a = self.slots[i]
+        b = self.slots[j]
+        self.slots[i] = b
+        self.slots[b] = a
+
     def chunks(self):
         """Yield successive n-sized chunks from lst."""
         bp = int(math.sqrt(self.size))
