@@ -66,3 +66,6 @@ if __name__ == '__main__':
     for algorithm in algorithms[alg][1]:
         solver = algorithm(loggingLevel, boards)
         solver.run()
+
+    test = Board(9)
+    test.playGame()

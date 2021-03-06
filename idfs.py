@@ -2,9 +2,9 @@
 class idfs:
     '''Class that solves via brute force bfs'''
 
-    def __init__(self, loggingLevel, customBoard=None):
+    def __init__(self, loggingLevel, board):
         self.loggingLevel = loggingLevel
-        self.customBoard = customBoard
+        self.board = board
 
     def run(self):
         print('running the bfs algorithm')
