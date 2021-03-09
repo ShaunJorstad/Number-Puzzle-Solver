@@ -23,6 +23,7 @@ class Board(collections.MutableSequence):
         \n- presetList list of numbers to start the puzzle with. Exception is thrown if this length doesn't match the size
         \n- heuristic is the index of the heuristic to use
         '''
+        self.heuristicIndex = heuristic
         if not int(math.sqrt(size) + 0.5) ** 2 == size:
             raise Exception(f'Invalid size: {size} is not a perfect square')
         if presetList != None and len(presetList) != size:
@@ -35,7 +36,8 @@ class Board(collections.MutableSequence):
             self.slots = list()
             self.size = size
             for i in range(size):
-                self.slots.append(i)
+                self.slots.append(i + 1)
+            self.slots[8] = 0
 
     def __len__(self):
         return len(self.slots)
@@ -141,8 +143,17 @@ class Board(collections.MutableSequence):
 
     def heuristic(self):
         ''' todo: work in progress'''
-        if self.heuristic == None:
+        if self.heuristicIndex == None:
             return 1
+        if self.heuristicIndex == 1:
+            distance = 0
+            for i, num in enumerate(self):
+                if (num == 0):
+                    continue
+                rowDistance = abs((num - 1) // 3 - i // 3)
+                colDistance = abs((num - 1) % 3 - i % 3)
+                distance += rowDistance + colDistance
+            return distance
 
     def isSolved(self):
         ''' returns true if the board is solved'''
@@ -188,9 +199,9 @@ class Board(collections.MutableSequence):
             os.system('cls' if os.name == 'nt' else 'clear')
             print(self)
             val = int(input('select tile to move: '))
-            i = self.slots.index(val)
-            j = self.slots.index(0)
             try:
+                i = self.slots.index(val)
+                j = self.slots.index(0)
                 self.swap(i, j)
             except:
                 pass
