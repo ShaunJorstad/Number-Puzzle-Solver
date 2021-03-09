@@ -180,22 +180,24 @@ class Board(collections.MutableSequence):
         '''shuffles the board randomly. This may not be solveable'''
         random.shuffle(self.slots)
 
+    def isValid(self):
+        ''' determines if a board is solveable'''
+        totalSwaps = 0
+        for i in range(self.size):
+            val = self[i]
+            for j in range(self.size - i):
+                innerVal = self[j + i]
+                if innerVal == 0:
+                    continue
+                if (val > innerVal):
+                    totalSwaps += 1
+        return totalSwaps % 2 == 0
+
     def shuffleValid(self):
         '''shuffles the board into a randomly solveable position. I havn't verified that the resulting board is actually solveable'''
-        inversions = random.randrange(14, 80, 2)
-        for i in range(inversions):
-            a = random.randrange(0, self.size)
-            if a == 0:
-                self.swap(0, 1, True)
-            elif a == self.size - 1:
-                pass
-                self.swap(self.size - 1, self.size-2, True)
-            else:
-                direction = random.randrange(0, 2)
-                if direction == 0:
-                    self.swap(a, a-1, True)
-                else:
-                    self.swap(a, a+1, True)
+        self.shuffle()
+        while not self.isValid():
+            self.shuffle()
 
     def playGame(self):
         self.shuffleValid()
