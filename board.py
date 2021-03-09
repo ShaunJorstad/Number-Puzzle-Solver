@@ -24,6 +24,7 @@ class Board(collections.MutableSequence):
         \n- heuristic is the index of the heuristic to use
         '''
         self.heuristicIndex = heuristic
+        self.heur = 0
         if not int(math.sqrt(size) + 0.5) ** 2 == size:
             raise Exception(f'Invalid size: {size} is not a perfect square')
         if presetList != None and len(presetList) != size:
@@ -32,6 +33,7 @@ class Board(collections.MutableSequence):
         if presetList != None:
             self.slots = presetList
             self.size = size
+            self.heur = self.heuristic()
         else:
             self.slots = list()
             self.size = size
@@ -106,12 +108,14 @@ class Board(collections.MutableSequence):
         b = self.slots[j]
         self.slots[i] = b
         self.slots[j] = a
+        self.heur = self.heuristic()
 
     def branch(self, i, j):
         '''
         creates a new instance of the current board, and performs the designated swap. Returns the new instance. An exception is raised by the swap method if the indices are invalid
         '''
-        nextBoard = Board(self.size, self.slots.copy())
+        nextBoard = Board(self.size, self.slots.copy(),
+                          heuristic=self.heuristicIndex)
         nextBoard.swap(i, j)
         return nextBoard
 
@@ -138,13 +142,13 @@ class Board(collections.MutableSequence):
         nextBranches = []
         blank = self.slots.index(0)
         for index in swapIndexes(blank):
-            nextBranches.append(self.branch(blank, index))
+            nextBranches.append(self.branch(blank, index, self.heuristicIndex))
         return nextBranches
 
     def heuristic(self):
         ''' todo: work in progress'''
         if self.heuristicIndex == None:
-            return 1
+            return 0
         if self.heuristicIndex == 1:
             distance = 0
             for i, num in enumerate(self):

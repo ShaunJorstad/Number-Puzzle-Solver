@@ -66,11 +66,3 @@ if __name__ == '__main__':
     for algorithm in algorithms[alg][1]:
         solver = algorithm(loggingLevel, boards)
         solver.run()
-
-    # test = Board(9, heuristic=1)
-    # test.swap(8, 7)
-    # test.swap(4, 7)
-    # print(test)
-    # # test.shuffle()
-    # print(test.heuristic())
-    # # test.playGame()
