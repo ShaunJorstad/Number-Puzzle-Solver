@@ -149,6 +149,13 @@ class Board(collections.MutableSequence):
         ''' todo: work in progress'''
         if self.heuristicIndex == None:
             return 0
+        if self.heuristicIndex == 0:
+            correct = 0
+            correctBoard = [1, 2, 3, 4, 5, 6, 7, 8, 0]
+            for i in range(len(self.board)):
+                if correctBoard[i] == self.board[i]:
+                    correct += 1
+            return correct
         if self.heuristicIndex == 1:
             distance = 0
             for i, num in enumerate(self):
