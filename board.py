@@ -59,7 +59,7 @@ class Board(collections.MutableSequence):
 
     def append(self, value):
         self.insert(len(self) + 1, value)
-    
+
     def __eq__(self, other):
         if self.size != other.size:
             return False
@@ -67,7 +67,7 @@ class Board(collections.MutableSequence):
         for i in range(len(self.slots)):
             if(self.slots[i] != other.slots[i]):
                 return False
-        
+
         return True
 
     def customBuild(self):
@@ -179,8 +179,8 @@ class Board(collections.MutableSequence):
         if self.heuristicIndex == 0:
             correct = 0
             correctBoard = [1, 2, 3, 4, 5, 6, 7, 8, 0]
-            for i in range(len(self.board)):
-                if correctBoard[i] == self.board[i]:
+            for i in range(self.size):
+                if correctBoard[i] == self.slots[i]:
                     correct += 1
             return self.size - correct
         if self.heuristicIndex == 1:

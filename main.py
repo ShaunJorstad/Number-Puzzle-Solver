@@ -14,6 +14,12 @@ loggingLevels = {
     'v': 'verbose'
 }
 
+heuristicLevels = {
+    '': 'no heuristic',
+    '0': 'Bad heuristic: num of correctly positioned tiles',
+    '1': 'Good heuristic: Manhatten distance'
+}
+
 
 def prompt(validInput, promptTitle, default):
     '''
@@ -42,6 +48,17 @@ def promptLoggingLevel():
     return prompt(loggingLevels, 'Select logging level', 'silent')
 
 
+def promptHeuristicLevel():
+    '''prompts for heurstic to use'''
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print('0: (bad) number of correctly positioned tiles')
+    print('1: (good) manhatten distance')
+    result = prompt(heuristicLevels, 'Select heuristic', 'none')
+    if result == '':
+        return None
+    return int(result)
+
+
 def useCustomBoard():
     ''' prompts the user if they want provide a custom board to solve or not'''
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -53,17 +70,19 @@ if __name__ == '__main__':
     alg = promptAlgorithm()
     loggingLevel = promptLoggingLevel()
     customBoard = useCustomBoard()
-    boards = []
+    heuristicLevel = promptHeuristicLevel()
+    board = None
     if customBoard:
         board = Board(boardSize)
         board.customBuild()
-        boards.append(board)
     else:
         # reference a list of predefined boards
-        pass
+        board = Board(boardSize, heuristic=heuristicLevel)
+        board.shuffleValid()
     print(
         f'\nRunning {algorithms[alg][0]} at {loggingLevels[loggingLevel]} logging')
     for algorithm in algorithms[alg][1]:
-        solver = algorithm(loggingLevel, boards)
-        solver.run()
-        #run should return the final board so that we can print the history here 
+        solver = algorithm(loggingLevel, board)
+        result = solver.run()
+        print(result)
+        # run should return the final board so that we can print the history here
