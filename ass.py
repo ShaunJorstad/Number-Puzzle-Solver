@@ -19,7 +19,7 @@ class ass:
 
         while self.boardsToLookAt: #still have paths left
             #get best path
-            bestCurrentBoard = self.boardsToLookAt[self.bestBoard()]
+            bestCurrentBoard = self.boardsToLookAt[self.bestBoardIndex()]
             #if solved break
             if(bestCurrentBoard.isSolved()):
                 return bestCurrentBoard
@@ -34,11 +34,11 @@ class ass:
             self.board() #return original board if not found 
         
     
-    def bestBoard(self):
+    def bestBoardIndex(self):
         '''Return the index to the board with the lowest heuristic'''
         lowestHeuristicBoard = self.boardsToLookAt[0]
         for board in self.boardsToLookAt:
-            if board.heuristic() < lowestHeuristicBoard.heuristic():
+            if board.heuristic() + len(board.swapHistory) < lowestHeuristicBoard.heuristic() + len(lowestHeuristicBoard.swapHistory):
                 lowestHeuristicBoard = board
         
         return self.boardsToLookAt.index(lowestHeuristicBoard)
@@ -46,5 +46,6 @@ class ass:
 
 #for testing
 a = ass(logging.DEBUG, Board(9, heuristic = 1))
-a.run()
+final = a.run()
+final.printHistory()
 
