@@ -13,7 +13,7 @@ class ass:
 
     def run(self):
         print('running the a* algorithm')
-        self.board.shuffle()
+        self.board.shuffleValid()
         print("Original Board")
         print(self.board)
         h = self.board.heuristic()
