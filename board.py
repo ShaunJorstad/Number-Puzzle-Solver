@@ -16,7 +16,7 @@ class Board(collections.MutableSequence):
     \n The space is stored as the number 0. When this prints out it parses as a space
     '''
 
-    def __init__(self, size=9, presetList=None, heuristic=None):
+    def __init__(self, size=9, presetList=None, heuristic=None, swapHistory=[]):
         '''
         size is the number of tiles to create
         \n- size is the size of puzzle to create, defaults to 9. An exception is thrown if this value is not a perfect square
@@ -25,6 +25,7 @@ class Board(collections.MutableSequence):
         '''
         self.heuristicIndex = heuristic
         self.heur = 0
+        self.swapHistory = swapHistory
         if not int(math.sqrt(size) + 0.5) ** 2 == size:
             raise Exception(f'Invalid size: {size} is not a perfect square')
         if presetList != None and len(presetList) != size:
@@ -86,7 +87,21 @@ class Board(collections.MutableSequence):
         os.system('cls' if os.name == 'nt' else 'clear')
         print(self)
 
-    def swap(self, i, j, force=False):
+    def getNumSwaps(self):
+        return len(self.swapHistory)
+
+    def printHistory(self):
+        for (i, j) in reversed(self.swapHistory):
+            self.swap(i, j, recordSwap=False)
+
+        print(f'Starting Board, swapCount: 0\n{self}\n')
+        count = 0
+        for (i, j) in self.swapHistory:
+            self.swap(i, j, recordSwap=False)
+            count += 1
+            print(f'\nSwapCount: {count}\n{self}\n')
+
+    def swap(self, i, j, force=False, recordSwap=True):
         '''
         swaps two cells in the puzzle. An exception is raised if the indices are an invalid move
         passing force as true doesn't check the bounds before swapping
@@ -108,6 +123,8 @@ class Board(collections.MutableSequence):
         b = self.slots[j]
         self.slots[i] = b
         self.slots[j] = a
+        if recordSwap:
+            self.swapHistory.append((i, j))
         self.heur = self.heuristic()
 
     def branch(self, i, j):
@@ -115,7 +132,7 @@ class Board(collections.MutableSequence):
         creates a new instance of the current board, and performs the designated swap. Returns the new instance. An exception is raised by the swap method if the indices are invalid
         '''
         nextBoard = Board(self.size, self.slots.copy(),
-                          heuristic=self.heuristicIndex)
+                          heuristic=self.heuristicIndex, swapHistory=self.swapHistory.copy())
         nextBoard.swap(i, j)
         return nextBoard
 
@@ -142,7 +159,7 @@ class Board(collections.MutableSequence):
         nextBranches = []
         blank = self.slots.index(0)
         for index in swapIndexes(blank):
-            nextBranches.append(self.branch(blank, index, self.heuristicIndex))
+            nextBranches.append(self.branch(blank, index))
         return nextBranches
 
     def heuristic(self):
@@ -155,7 +172,7 @@ class Board(collections.MutableSequence):
             for i in range(len(self.board)):
                 if correctBoard[i] == self.board[i]:
                     correct += 1
-            return correct
+            return self.size - correct
         if self.heuristicIndex == 1:
             distance = 0
             for i, num in enumerate(self):
