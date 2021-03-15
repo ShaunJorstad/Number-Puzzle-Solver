@@ -16,13 +16,24 @@ class ass:
     def run(self):
         print('running the a* algorithm')
         self.boardsToLookAt.append(self.board)
+        levelsDeep = 0
 
         while self.boardsToLookAt:  # still have paths left
             # get best path
             bestCurrentBoard = self.boardsToLookAt[self.bestBoardIndex()]
             # if solved break
             if(bestCurrentBoard.isSolved()):
+                print()
                 return bestCurrentBoard
+            #print progress bar
+            if levelsDeep < bestCurrentBoard.getNumSwaps():
+                levelsDeep = bestCurrentBoard.getNumSwaps()
+                #clear writeout
+                sys.stdout.write('\r')
+                # the exact output you're looking for:
+                sys.stdout.write("[%-20s] %d%%" % ('='*levelsDeep, 5*levelsDeep))
+                print(f'.', end='')
+            
             # remove the currentBoard
             self.boardsToLookAt.remove(bestCurrentBoard)
             self.boardsLookedAt.append(bestCurrentBoard)
@@ -31,6 +42,7 @@ class ass:
                 if board not in self.boardsLookedAt:
                     self.boardsToLookAt.append(board)
         if not self.boardsToLookAt:
+            print()
             self.board()  # return original board if not found
 
     def bestBoardIndex(self):
@@ -44,6 +56,8 @@ class ass:
 
 
 # for testing
-# a = ass(logging.DEBUG, Board(9, heuristic=1))
+# b = Board(9, heuristic=1)
+# b.shuffleValid()
+# a = ass(logging.DEBUG, b)
 # final = a.run()
-# final.printHistor)
+# final.printHistory()
