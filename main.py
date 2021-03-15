@@ -66,3 +66,4 @@ if __name__ == '__main__':
     for algorithm in algorithms[alg][1]:
         solver = algorithm(loggingLevel, boards)
         solver.run()
+        #run should return the final board so that we can print the history here 

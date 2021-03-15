@@ -20,23 +20,10 @@ class ass:
         while self.boardsToLookAt: #still have paths left
             #get best path
             bestCurrentBoard = self.boardsToLookAt[self.bestBoard()]
-<<<<<<< HEAD
             #if solved break
             if(bestCurrentBoard.isSolved()):
                 return bestCurrentBoard
             #remove the currentBoard
-=======
-            #Print Best Board so far
-            if (bestCurrentBoard.heuristic() < h):
-                h = bestCurrentBoard.heuristic()
-                print("Best Board")
-                print(bestCurrentBoard)
-                print("Best Heuristic: " + str(bestCurrentBoard.heuristic()))
-            if(bestCurrentBoard.isSolved()):
-                print("Solved!!")
-                print(bestCurrentBoard)
-                break
->>>>>>> fc0957100decccc93e869266649baea920ba9252
             self.boardsToLookAt.remove(bestCurrentBoard)
             self.boardsLookedAt.append(bestCurrentBoard)
             #add all the boards that we haven't already analyzed
@@ -44,7 +31,7 @@ class ass:
                 if board not in self.boardsLookedAt:
                     self.boardsToLookAt.append(board)
         if not self.boardsToLookAt:
-            print(f"Could not solve, looked at {len(self.boardsLookedAt)} boards.")
+            self.board() #return original board if not found 
         
     
     def bestBoard(self):
