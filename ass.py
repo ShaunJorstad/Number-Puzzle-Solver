@@ -6,14 +6,15 @@ class ass:
 
     def __init__(self, loggingLevel, board, boardsToLookAt=None, boardsLookedAt=None, paths=None):
         self.loggingLevel = loggingLevel
-        self.board = board.shuffleValid()
-        self.boardsToLookAt = [self.board]
+        self.board = board
+        self.boardsToLookAt = []
         self.boardsLookedAt = []
         self.paths = []
 
     def run(self):
         print('running the a* algorithm')
-
+        self.board.shuffleValid()
+        self.boardsToLookAt.append(self.board)
         h = self.board.heuristic()
 
         while self.boardsToLookAt: #still have paths left
