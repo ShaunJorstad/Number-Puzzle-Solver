@@ -13,7 +13,7 @@ class ass:
         self.boardsLookedAt = []
         self.paths = []
 
-    def run(self):
+    def run(self, parallel=False, smart=False):
         print('running the a* algorithm')
         self.boardsToLookAt.append(self.board)
         levelsDeep = 0

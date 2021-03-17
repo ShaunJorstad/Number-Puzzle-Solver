@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 class idfs:
     '''Class that solves via brute force bfs'''
 
-    MAX_DEPTH = 18
+    MAX_DEPTH = 15
 
     def __init__(self, loggingLevel, board, max_depth=None):
         self.loggingLevel = loggingLevel
@@ -57,7 +57,7 @@ class idfs:
                     stack.insert(0, (current[0]+1, branch))
         return None
 
-    def run(self, parallel=False, silent=True, smart=False): 
+    def run(self, parallel=False, silent=False, smart=False): 
 
         if not silent:
             print('running the idfs algorithm')
@@ -68,9 +68,6 @@ class idfs:
 
         for i in range(0, self.MAX_DEPTH):
             self.current_depth = i
-
-            if not silent:
-                print(f'Current Depth Limit: {i}')
 
             if not smart:
                 if parallel:
