@@ -6,6 +6,8 @@ import sys
 import random
 import time
 import logging
+from aStar import aStar
+from idfs import idfs
 
 
 class Board(collections.MutableSequence):
@@ -234,15 +236,29 @@ class Board(collections.MutableSequence):
             self.shuffle()
 
     def playGame(self):
-        self.shuffleValid()
-        while not self.isSolved():
+        val = None
+        if not self.isValid():
+            print("This board has no solution")
+            return
+        while not self.isSolved() and val != "solve":
             os.system('cls' if os.name == 'nt' else 'clear')
             print(self)
-            val = int(input('select tile to move: '))
+            print(f'Total moves: {len(self.swapHistory)}')
+            print("type (solve) to view the solution")
+            val = input(f'select tile to move (1 -> {self.size -1}): ')
             try:
-                i = self.slots.index(val)
-                j = self.slots.index(0)
-                self.swap(i, j)
+                if val == "solve":
+                    copy = Board(presetList=self.slots.copy(), heuristic=1)
+                    copy.swapHistory.clear()
+                    solver = aStar('v', copy)
+                    solution = solver.run()
+                    solution.printHistory()
+                    return
+                else:
+                    val = int(val)
+                    i = self.slots.index(val)
+                    j = self.slots.index(0)
+                    self.swap(i, j)
             except:
                 pass
         os.system('cls' if os.name == 'nt' else 'clear')

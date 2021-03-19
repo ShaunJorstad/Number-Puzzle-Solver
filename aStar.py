@@ -1,6 +1,5 @@
 import logging
 import sys
-from board import Board
 
 
 class aStar:
@@ -54,11 +53,3 @@ class aStar:
                 lowestHeuristicBoard = board
 
         return self.boardsToLookAt.index(lowestHeuristicBoard)
-
-
-# for testing
-# b = Board(9, heuristic=1)
-# b.shuffleValid()
-# a = ass(logging.DEBUG, b)
-# final = a.run()
-# final.printHistory()
