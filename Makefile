@@ -1,2 +1,2 @@
 install:
-	pip install tabulate
+	pip install tabulate matplotlib

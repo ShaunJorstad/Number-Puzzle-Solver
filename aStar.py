@@ -3,7 +3,7 @@ import sys
 from board import Board
 
 
-class ass:
+class aStar:
     '''Class that solves puzzle via A* search'''
 
     def __init__(self, loggingLevel, board, boardsToLookAt=None, boardsLookedAt=None, paths=None):
@@ -25,15 +25,16 @@ class ass:
             if(bestCurrentBoard.isSolved()):
                 print()
                 return bestCurrentBoard
-            #print progress bar
+            # print progress bar
             if levelsDeep < bestCurrentBoard.getNumSwaps():
                 levelsDeep = bestCurrentBoard.getNumSwaps()
-                #clear writeout
+                # clear writeout
                 sys.stdout.write('\r')
                 # the exact output you're looking for:
-                sys.stdout.write("[%-20s] %d%%" % ('='*levelsDeep, 5*levelsDeep))
+                sys.stdout.write("[%-20s] %d%%" %
+                                 ('='*levelsDeep, 5*levelsDeep))
                 print(f'.', end='')
-            
+
             # remove the currentBoard
             self.boardsToLookAt.remove(bestCurrentBoard)
             self.boardsLookedAt.append(bestCurrentBoard)

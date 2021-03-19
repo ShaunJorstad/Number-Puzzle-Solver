@@ -1,12 +1,12 @@
 from idfs import idfs
-from ass import ass
+from aStar import aStar
 from board import Board
 import os
 
 algorithms = {
-    '': ('idfs and A*', [idfs, ass], [False, False]),
+    '': ('idfs and A*', [idfs, aStar], [False, False]),
     'idfs': ('only bfs', [idfs], [False, False]),
-    'a': ('only a*', [ass], [False, False]),
+    'aStar': ('only a*', [aStar], [False, False]),
     'idfs-greedy': ('idfs serial greedy', [idfs], [False, True]),
     'idfs-parallel': ('idfs parallel', [idfs], [True, False]),
     'idfs-parallel-greedy': ('idfs parallel greedy', [idfs], [True, True])
@@ -86,6 +86,7 @@ if __name__ == '__main__':
         f'\nRunning {algorithms[alg][0]} at {loggingLevels[loggingLevel]} logging')
     for algorithm in algorithms[alg][1]:
         solver = algorithm(loggingLevel, board)
-        result = solver.run(parallel=algorithms[alg][2][0], greedy=algorithms[alg][2][1])
+        result = solver.run(
+            parallel=algorithms[alg][2][0], greedy=algorithms[alg][2][1])
         print(result)
         # run should return the final board so that we can print the history here

@@ -2,9 +2,10 @@
 from board import Board
 from multiprocessing import Pool
 from time import time
-import numpy as np  
-import matplotlib.pyplot as plt 
+import numpy as np
+import matplotlib.pyplot as plt
 from random import *
+
 
 class idfs:
     '''Class that solves via brute force bfs'''
@@ -18,14 +19,14 @@ class idfs:
             self.MAX_DEPTH = max_depth
 
     def greedy_traverse(self, stack, viewed, depth_limit, thread_num=None):
-        
+
         # if thread_num is not None:
-                #     print(f'{thread_num}: \n{stack[0]}')
+        #     print(f'{thread_num}: \n{stack[0]}')
 
         stack = list(enumerate(stack))
 
         while len(stack) > 0:
-            
+
             current = stack.pop(0)
 
             if current[1].isSolved():
@@ -38,14 +39,13 @@ class idfs:
                         viewed.append(branch)
         return None
 
-
     def traverse(self, stack, depth_limit, thread_num=None):
-        
+
         # if thread_num is not None:
         #     print(f'{thread_num}: \n{stack[0]}')
 
         stack = list(enumerate(stack))
-        
+
         while len(stack) > 0:
 
             current = stack.pop(0)
@@ -58,7 +58,7 @@ class idfs:
                     stack.insert(0, (current[0]+1, branch))
         return None
 
-    def run(self, parallel=False, silent=False, greedy=False): 
+    def run(self, parallel=False, silent=False, greedy=False):
 
         if not silent:
             print('running the idfs algorithm')
@@ -75,7 +75,8 @@ class idfs:
                     pool = Pool()
                     threads = []
                     for (thread_num, branch) in enumerate(branches):
-                        threads.append(pool.apply_async(self.traverse, [[branch], i, thread_num]))
+                        threads.append(pool.apply_async(
+                            self.traverse, [[branch], i, thread_num]))
                     for thread in threads:
                         if thread.get() is not None:
                             thread.get().printHistory()
@@ -89,13 +90,15 @@ class idfs:
                     pool = Pool()
                     threads = []
                     for (thread_num, branch) in enumerate(branches):
-                        threads.append(pool.apply_async(self.greedy_traverse, [[branch], [self.board], i, thread_num]))
+                        threads.append(pool.apply_async(self.greedy_traverse, [
+                                       [branch], [self.board], i, thread_num]))
                     for thread in threads:
                         if thread.get() is not None:
                             thread.get().printHistory()
                             return thread.get()
                 else:
-                    result = self.greedy_traverse([self.board], [self.board], i)
+                    result = self.greedy_traverse(
+                        [self.board], [self.board], i)
                     if result is not None:
                         return result
 
@@ -129,7 +132,7 @@ if __name__ == '__main__':
             parallelTimes.append(stopTime - startTime)
 
             solutionFound.append(val is not None)
-        
+
         print(f'Serial Times:')
         for time in serialTimes:
             print(f'{time}')
@@ -140,20 +143,25 @@ if __name__ == '__main__':
         print(f'\n\nWhich was better (for each max depth): ')
         for i in range(0, len(serialTimes)):
             if serialTimes[i] == parallelTimes[i]:
-                print(f'{i} -- Equal -- {"Solution Found" if solutionFound[i] else "Solution Not Found"}')
+                print(
+                    f'{i} -- Equal -- {"Solution Found" if solutionFound[i] else "Solution Not Found"}')
             elif serialTimes[i] < parallelTimes[i]:
-                print(f'{i} -- Serial -- {"Solution Found" if solutionFound[i] else "Solution Not Found"}')
+                print(
+                    f'{i} -- Serial -- {"Solution Found" if solutionFound[i] else "Solution Not Found"}')
             else:
-                print(f'{i} -- Parallel -- {"Solution Found" if solutionFound[i] else "Solution Not Found"}')
+                print(
+                    f'{i} -- Parallel -- {"Solution Found" if solutionFound[i] else "Solution Not Found"}')
 
-        plt.title("Line graph")   
-        plt.xlabel("Run Times")  
-        plt.ylabel("Depth Limit") 
-        plt.plot(range(0, limit), serialTimes, color ="red", label='Serial')  
-        plt.plot(range(0, limit), parallelTimes, color ="blue", label='Parallel') 
-        plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.00), shadow=True, ncol=2)
+        plt.title("Line graph")
+        plt.xlabel("Run Times")
+        plt.ylabel("Depth Limit")
+        plt.plot(range(0, limit), serialTimes, color="red", label='Serial')
+        plt.plot(range(0, limit), parallelTimes,
+                 color="blue", label='Parallel')
+        plt.legend(loc='upper center', bbox_to_anchor=(
+            0.5, 1.00), shadow=True, ncol=2)
         plt.show()
-    
+
     def test_all(limit):
         board = Board(presetList=[1, 2, 3, 4, 5, 6, 8, 7, 0])
 
@@ -187,14 +195,17 @@ if __name__ == '__main__':
             stopTime = time()
             parallelgreedy.append(stopTime-startTime)
 
-        plt.title("Line graph")   
-        plt.xlabel("Depth Limit")  
-        plt.ylabel("Run Times") 
-        # plt.plot(range(0, limit+1), serialNotgreedy, color ="red", label='Serial Not greedy')  
-        plt.plot(range(0, limit+1), serialgreedy, color ="blue", label='Serial greedy')  
-        # plt.plot(range(0, limit+1), parallelNotgreedy, color ="orange", label='Parallel Not greedy') 
-        plt.plot(range(0, limit+1), parallelgreedy, color ="purple", label='Parallel greedy') 
-        plt.legend(loc='upper center', bbox_to_anchor=(0.5, 1.00), shadow=True, ncol=2)
+        plt.title("Line graph")
+        plt.xlabel("Depth Limit")
+        plt.ylabel("Run Times")
+        # plt.plot(range(0, limit+1), serialNotgreedy, color ="red", label='Serial Not greedy')
+        plt.plot(range(0, limit+1), serialgreedy,
+                 color="blue", label='Serial greedy')
+        # plt.plot(range(0, limit+1), parallelNotgreedy, color ="orange", label='Parallel Not greedy')
+        plt.plot(range(0, limit+1), parallelgreedy,
+                 color="purple", label='Parallel greedy')
+        plt.legend(loc='upper center', bbox_to_anchor=(
+            0.5, 1.00), shadow=True, ncol=2)
         plt.show()
 
     # test_all(25)
@@ -202,7 +213,7 @@ if __name__ == '__main__':
     did_work = 0
     for i in range(0, 1000):
 
-        if i%10 == 0:
+        if i % 10 == 0:
             print(f'{i}')
 
         solved_board = Board(presetList=[1, 2, 3, 4, 5, 6, 7, 8, 0])
@@ -210,7 +221,7 @@ if __name__ == '__main__':
         depth = 15
 
         for _ in range(0, depth-1):
-            
+
             branches = board.branches()
             board = branches[randint(0, len(branches)-1)]
             while board == solved_board:
