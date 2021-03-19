@@ -248,8 +248,9 @@ class Board(collections.MutableSequence):
             val = input(f'select tile to move (1 -> {self.size -1}): ')
             try:
                 if val == "solve":
-                    # solver =
-                    solver = aStar('v', self)
+                    copy = Board(presetList=self.slots.copy(), heuristic=1)
+                    copy.swapHistory.clear()
+                    solver = aStar('v', copy)
                     solution = solver.run()
                     solution.printHistory()
                     return
