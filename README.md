@@ -8,7 +8,9 @@ Leverages ai search practices to solve an 8 number puzzle as shown below with va
 
 ## Algorithms
 
-This program implements BFS brute force and A\* with various heuristics to solve the puzzle.
+This program implements Iterative Deepening Search and A*. A* search with no selected heuristic is a non-informed breadth first search, which takes a very long time to solve. The bad heuristic is based on the number of tiles correctly positioned on the board, this is better than the uninformed search but still takes a long time to solve. The best implemented heuristic is the Manhattan distance of the board, which is the summation of each tile's distance from it's correct position. 
+
+The python script allows you to play a random game with any valid sized board, and also allows you to custom input a board and feeds you instructions to solve it.
 
 ## Run
 
