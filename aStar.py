@@ -1,6 +1,5 @@
 import logging
 import sys
-from board import Board
 
 
 class aStar:
